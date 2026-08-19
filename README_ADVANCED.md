@@ -1054,6 +1054,28 @@ In external mode Sumaform installs `kubectl` and Helm on the controller, copies 
 It does not create a `server_kubernetes` VM, install RKE2, or use `/etc/rancher/rke2/rke2.yaml`.
 The target cluster must already provide the required ingress/load-balancer and storage setup; if `install_cert_manager` is true, Sumaform installs cert-manager and trust-manager into the external cluster before installing Uyuni.
 
+Additional volumes for the Uyuni server pod can be forwarded to the Helm chart through the `server_kubernetes` host settings. For example, this mounts an existing PVC read-only at `/uyuni-bench-source`:
+
+```hcl
+host_settings = {
+  server_kubernetes = {
+    extra_volumes = [{
+      name = "uyuni-bench-source"
+      persistentVolumeClaim = {
+        claimName = "uyuni-bench-source"
+      }
+    }]
+    extra_volume_mounts = [{
+      name      = "uyuni-bench-source"
+      mountPath = "/uyuni-bench-source"
+      readOnly  = true
+    }]
+  }
+}
+```
+
+Sumaform forwards these values as `server-helm.server.extraVolumes` and `server-helm.server.extraVolumeMounts`; it does not create or populate the referenced PVC. A `hostPath` volume can also be supplied, but its path must exist on every Kubernetes node where the server pod may run.
+
 This mode currently covers the Uyuni server deployment. Do not combine it with `proxy_kubernetes`; Kubernetes proxy deployments still use the Sumaform-managed RKE2 proxy workflow.
 
 ## Large deployments
