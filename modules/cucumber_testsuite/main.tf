@@ -123,6 +123,10 @@ locals {
     host_key => lookup(var.host_settings[host_key], "kubernetes_storage_backend", var.kubernetes_storage_backend) if var.host_settings[host_key] != null }
   kubernetes_storage_class = { for host_key in local.hosts :
     host_key => lookup(var.host_settings[host_key], "kubernetes_storage_class", var.kubernetes_storage_class) if var.host_settings[host_key] != null }
+  kubernetes_server_extra_volumes = { for host_key in local.hosts :
+    host_key => lookup(var.host_settings[host_key], "extra_volumes", []) if var.host_settings[host_key] != null }
+  kubernetes_server_extra_volume_mounts = { for host_key in local.hosts :
+    host_key => lookup(var.host_settings[host_key], "extra_volume_mounts", []) if var.host_settings[host_key] != null }
   local_path_provisioner_path = { for host_key in local.hosts :
     host_key => lookup(var.host_settings[host_key], "local_path_provisioner_path", var.local_path_provisioner_path) if var.host_settings[host_key] != null }
   local_path_provisioner_default_class = { for host_key in local.hosts :
@@ -307,6 +311,8 @@ module "server_kubernetes" {
   install_local_path_provisioner  = var.install_local_path_provisioner
   kubernetes_storage_backend                = lookup(local.kubernetes_storage_backend, "server_kubernetes", var.kubernetes_storage_backend)
   kubernetes_storage_class                  = lookup(local.kubernetes_storage_class, "server_kubernetes", var.kubernetes_storage_class)
+  extra_volumes                             = lookup(local.kubernetes_server_extra_volumes, "server_kubernetes", [])
+  extra_volume_mounts                       = lookup(local.kubernetes_server_extra_volume_mounts, "server_kubernetes", [])
   local_path_provisioner_path               = lookup(local.local_path_provisioner_path, "server_kubernetes", var.local_path_provisioner_path)
   local_path_provisioner_default_class      = lookup(local.local_path_provisioner_default_class, "server_kubernetes", var.local_path_provisioner_default_class)
   local_path_provisioner_reclaim_policy     = lookup(local.local_path_provisioner_reclaim_policy, "server_kubernetes", var.local_path_provisioner_reclaim_policy)
@@ -714,6 +720,8 @@ module "controller" {
   deploy_saline                                 = var.deploy_saline
   deploy_hub_api                                = var.deploy_hub_api
   deploy_tftp                                   = var.deploy_tftp
+  kubernetes_server_extra_volumes               = lookup(local.kubernetes_server_extra_volumes, "server_kubernetes", [])
+  kubernetes_server_extra_volume_mounts         = lookup(local.kubernetes_server_extra_volume_mounts, "server_kubernetes", [])
 
   additional_repos  = lookup(local.additional_repos, "controller", {})
   additional_repos_only  = lookup(local.additional_repos_only, "controller", false)

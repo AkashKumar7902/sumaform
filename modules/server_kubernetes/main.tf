@@ -110,6 +110,8 @@ module "server_kubernetes" {
     install_local_path_provisioner = var.install_local_path_provisioner
     kubernetes_storage_backend                = var.kubernetes_storage_backend
     kubernetes_storage_class                  = local.kubernetes_storage_class
+    kubernetes_server_extra_volumes           = var.extra_volumes
+    kubernetes_server_extra_volume_mounts     = var.extra_volume_mounts
     local_path_provisioner_path               = var.local_path_provisioner_path
     local_path_provisioner_default_class      = var.local_path_provisioner_default_class
     local_path_provisioner_reclaim_policy     = var.local_path_provisioner_reclaim_policy

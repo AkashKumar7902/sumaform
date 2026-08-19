@@ -164,6 +164,18 @@ variable "kubernetes_storage_class" {
   default     = null
 }
 
+variable "extra_volumes" {
+  description = "Additional Kubernetes volumes passed to server-helm.server.extraVolumes"
+  type        = any
+  default     = []
+}
+
+variable "extra_volume_mounts" {
+  description = "Additional Kubernetes volume mounts passed to server-helm.server.extraVolumeMounts"
+  type        = any
+  default     = []
+}
+
 variable "local_path_provisioner_path" {
   description = "Host path used by Rancher's local-path provisioner for dynamically provisioned volumes."
   default     = "/opt/local-path-provisioner"

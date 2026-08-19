@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: MIT
 
 {% set kubernetes_storage_class = grains.get('kubernetes_storage_class') %}
+{% set extra_volumes = grains.get('kubernetes_server_extra_volumes', []) %}
+{% set extra_volume_mounts = grains.get('kubernetes_server_extra_volume_mounts', []) %}
 
 # Default credentials, make sure to set them
 credentials:
@@ -59,13 +61,20 @@ server-helm:
     tag: {{ tftpd_container_tag }}
     {% endif %}
 {% endif %}
-{% if app_armor_name %}
+{% if app_armor_name or selinuxType or extra_volumes or extra_volume_mounts %}
   server:
+{% if app_armor_name %}
     apparmorProfile: {{ app_armor_name }}
 {% endif %}
 {% if selinuxType %}
-  server:
     selinuxType: {{ selinuxType }}
+{% endif %}
+{% if extra_volumes %}
+    extraVolumes: {{ extra_volumes | tojson }}
+{% endif %}
+{% if extra_volume_mounts %}
+    extraVolumeMounts: {{ extra_volume_mounts | tojson }}
+{% endif %}
 {% endif %}
 {% if deploy_coco_attestation %}
   coco:
@@ -97,5 +106,4 @@ server-helm:
     tag: {{ hub_api_container_tag }}
     {% endif %}
 {% endif %}
-
 

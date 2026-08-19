@@ -995,3 +995,15 @@ variable "deploy_tftp" {
   description = "true to enable the TFTP service in external Kubernetes cluster Helm values"
   default     = true
 }
+
+variable "kubernetes_server_extra_volumes" {
+  description = "Additional Kubernetes volumes passed to server-helm.server.extraVolumes for external cluster installs"
+  type        = any
+  default     = []
+}
+
+variable "kubernetes_server_extra_volume_mounts" {
+  description = "Additional Kubernetes volume mounts passed to server-helm.server.extraVolumeMounts for external cluster installs"
+  type        = any
+  default     = []
+}
