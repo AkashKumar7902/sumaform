@@ -700,6 +700,7 @@ module "controller" {
   web_server_hostname      = var.web_server_hostname
   install_kubectl_helm     = var.install_kubectl_helm
   kubeconfig_path          = var.kubeconfig_path
+  kubernetes_cluster_mode  = var.kubernetes ? var.kubernetes_cluster_mode : null
 
   prometheus_push_gateway_url = var.prometheus_push_gateway_url
 

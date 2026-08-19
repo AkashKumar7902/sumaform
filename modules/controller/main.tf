@@ -84,6 +84,7 @@ module "controller" {
     web_server_hostname       = var.web_server_hostname
     install_kubectl_helm                         = var.install_kubectl_helm || var.install_kubernetes_server_on_external_cluster
     kubeconfig_content                           = var.kubeconfig_path != null ? base64encode(file(var.kubeconfig_path)) : ""
+    kubernetes_cluster_mode                      = var.kubernetes_cluster_mode
     install_kubernetes_server_on_external_cluster = var.install_kubernetes_server_on_external_cluster
     kubernetes_server_fqdn                       = var.kubernetes_server_fqdn
     helm_chart_name                              = var.kubernetes_server_helm_chart_name

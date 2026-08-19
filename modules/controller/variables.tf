@@ -941,6 +941,12 @@ variable "kubeconfig_path" {
   default = null
 }
 
+variable "kubernetes_cluster_mode" {
+  description = "Kubernetes cluster mode exported to the testsuite controller; leave null outside Kubernetes testsuites"
+  type        = string
+  default     = null
+}
+
 variable "install_kubernetes_server_on_external_cluster" {
   description = "true to install the Kubernetes Uyuni server from the controller using /root/.kube/config"
   default     = false
